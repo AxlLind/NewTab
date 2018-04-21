@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import CalenderItem from './CalenderItem.js';
-import '../css/Calender.css';
+import CalendarItem from './CalendarItem.js';
+import '../css/Calendar.css';
 
 // const cal_ID = '5lp6h8gitj2p09fgujndb1ok2e7ljq3v@import.calendar.google.com';
 // const API_Key = 'AIzaSyDhsYNMlYnJjdEfHIZt0UoL-4dKuQj6n6s';
@@ -39,7 +39,7 @@ const example_res = {
        self: true
       },
       start: {
-       dateTime: "2018-05-02T11:00:00Z"
+       dateTime: "2018-04-21T11:00:00Z"
       },
       end: {
        dateTime: "2018-05-02T13:00:00Z"
@@ -350,29 +350,45 @@ const example_res = {
     ]
 }
 
-class Calender extends Component {
+class Calendar extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { items: [] };
+        this.state = {
+            today: [],
+            rest: [],
+        };
     }
 
     componentDidMount() {
         // fetch(cal_query)
         //     .then( res => res.json() )
-        //     .then( res => this.setState({items: example_res.items}) );
-        this.setState({items: example_res.items})
+        //     .then( res => this.setState({items: res.items}) );
+        let todaysItems = [], rest = [];
+        example_res.items.forEach(
+            item => {
+                let date = new Date(item.start.dateTime).getDate();
+                if (date === new Date().getDate())
+                    todaysItems.push(item);
+                else rest.push(item);
+            }
+        );
+        this.setState({
+            today: todaysItems,
+            rest: rest,
+        });
     }
 
     render() {
         return (
-            <div className='Calender'>
-                {this.state.items.map(
-                    (item, i) => { return <CalenderItem name={this.state.items[i].summary}/> }
-                )}
+            <div className='Calendar'>
+                {this.state.today.length > 0 ? <div className='CalendarTitle'> Today </div> : ''}
+                {this.state.today.map( item => <CalendarItem item={item}/> )}
+                <div className='CalendarTitle'> Rest </div>
+                {this.state.rest.map( item => <CalendarItem item={item}/> )}
             </div>
         );
     }
 }
 
-export default Calender;
+export default Calendar;

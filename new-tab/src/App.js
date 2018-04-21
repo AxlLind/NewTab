@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import Calender from './components/Calender.js';
+import Calendar from './components/Calendar.js';
+import Clock from './components/Clock.js';
 import './css/App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className='App'>
-        <header className='App-header'>
-          <h1 className='App-title'>NewTab</h1>
-        </header>
-        <Calender/>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className='App'>
+                <Calendar/>
+                <Clock/>
+            </div>
+        );
+    }
 }
 
 export default App;

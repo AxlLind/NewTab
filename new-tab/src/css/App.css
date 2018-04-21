@@ -1,19 +1,10 @@
 .App {
-  text-align: center;
-}
-
-.App-header {
-  background-color: #222;
-  height: 50px;
-  padding: 20px;
-  color: white;
-  text-align: center;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
+    font-family: 'HelveticaNeue-UltraLight';
+    background: #222233;
+    color: #AACCFF;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
 }

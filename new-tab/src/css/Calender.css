@@ -1,9 +1,0 @@
-.Calender {
-    display: grid;
-    grid-column-gap: 5px;
-    justify-content: space-evenly;
-}
-
-.CalenderItem {
-    text-align: left;
-}
