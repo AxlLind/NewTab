@@ -23,13 +23,8 @@ class Clock extends Component {
     }
 
     dateToTime(date) {
-        let hours = date.getHours();
-        if (hours.toString().length === 1)
-            hours = `0${hours}`
-            let minutes = date.getMinutes();
-        if (minutes.toString().length === 1)
-            minutes = `0${minutes}`
-        return `${hours} ${minutes}`;
+        const appendZero = t => t < 10 ? `0${t}` : t;
+        return `${appendZero(date.getHours())} ${appendZero(date.getMinutes())}`;
     }
 
     render() {

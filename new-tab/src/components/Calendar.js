@@ -367,8 +367,8 @@ class Calendar extends Component {
         let todaysItems = [], rest = [];
         example_res.items.forEach(
             item => {
-                let date = new Date(item.start.dateTime).getDate();
-                if (date === new Date().getDate())
+                let date = new Date(item.start.dateTime);
+                if (date.getDate() === new Date().getDate())
                     todaysItems.push(item);
                 else rest.push(item);
             }
@@ -379,13 +379,20 @@ class Calendar extends Component {
         });
     }
 
+    calendarPart(items, title) {
+        return (items.length === 0) ? '' : (
+            <div className='CalendarPart'>
+                <div className='CalendarTitle'> {title} </div>
+                {items.map( item => <CalendarItem item={item} key={item.id}/> )}
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className='Calendar'>
-                {this.state.today.length > 0 ? <div className='CalendarTitle'> Today </div> : ''}
-                {this.state.today.map( item => <CalendarItem item={item}/> )}
-                <div className='CalendarTitle'> Rest </div>
-                {this.state.rest.map( item => <CalendarItem item={item}/> )}
+                {this.calendarPart(this.state.today, 'Today')}
+                {this.calendarPart(this.state.rest, 'Later')}
             </div>
         );
     }

@@ -1,12 +1,19 @@
 .Calendar {
     display: grid;
+    align-self: center;
+    justify-self: center;
+    grid-row-gap: 20px;
+}
+
+.CalendarPart {
+    display: grid;
     grid-row-gap: 15px;
-    justify-content: space-evenly;
 }
 
 .CalendarTitle {
     text-align: left;
     font-size: 2em;
+    border-bottom: 1px solid;
 }
 
 .CalendarItem {

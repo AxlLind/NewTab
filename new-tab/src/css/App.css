@@ -1,10 +1,39 @@
+@keyframes Fade-In {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.BackgroundColor {
+    /* Second div, otherwise the background color fades in */
+    background: #222233;
+}
+
 .App {
     font-family: 'HelveticaNeue-UltraLight';
-    background: #222233;
     color: #AACCFF;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
+    grid-template-columns: 1fr 1px 1fr;
     width: 100vw;
     height: 100vh;
+
+    animation-name: Fade-In;
+    animation-duration: 1s;
+}
+
+.BorderVertical {
+    border-right: 1px solid;
+    margin-bottom: 70px;
+    margin-top: 70px;
+}
+
+.BorderHorizontal {
+    border-top: 1px solid;
+    margin-left: 70px;
+    margin-right: 70px;
+}
+
+.TimeWeather {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
 }
