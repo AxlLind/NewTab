@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "fs": "^0.0.1-security",
+    "googleapis": "^29.0.0",
+    "googleauth": "^3.0.2",
+    "gtoken": "^2.3.0",
+    "pify": "^3.0.0",
+    "qs": "^6.5.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-scripts": "1.1.4"

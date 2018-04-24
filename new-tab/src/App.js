@@ -13,7 +13,6 @@ class App extends Component {
                         <Clock/>
                         <Weather/>
                     </div>
-                    <div className='BorderVertical'/>
                     <Calendar/>
                 </div>
             </div>

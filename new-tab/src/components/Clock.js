@@ -7,6 +7,7 @@ class Clock extends Component {
 
         this.state = {
             time: this.dateToTime(new Date()),
+            date: this.toDate(new Date()),
         }
     }
 
@@ -27,8 +28,22 @@ class Clock extends Component {
         return `${appendZero(date.getHours())} ${appendZero(date.getMinutes())}`;
     }
 
+    toDate(date) {
+        const appendZero = t => t < 10 ? `0${t}` : t;
+        return `${date.getFullYear()} ${appendZero(date.getMonth()+1)} ${appendZero(date.getDate())}`
+    }
+
     render() {
-        return <div className='Clock'> {this.state.time} </div>;
+        return (
+            <div>
+                <div className='Clock'>
+                    {this.state.time}
+                </div>
+                <div className='ClockDate'>
+                    {this.state.date}
+                </div>
+            </div>
+        );
     }
 }
 

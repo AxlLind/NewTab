@@ -7,13 +7,15 @@ class CalendarItem extends Component {
         if (!props.item)
             throw new Error('No item given to CalendarItem');
 
-        // special formatting for my calendar
         const start = this.dateToTime(new Date(props.item.start.dateTime));
         const end   = this.dateToTime(new Date(props.item.end.dateTime));
-        const s = props.item.summary.split('-');
+        // special formatting for my calendar
+        const s = props.item.summary.split(' - ');
+        if (s[0][0] === '*')
+            s[0] = s[0].substring(2);
         s[1] = s[1].split('.')[0]; // remove everything after the first dot
         this.state = {
-            type: s[0].substring(2),
+            type: s[0],
             name: s[1],
             location: props.item.location,
             time: `${start} | ${end}`,

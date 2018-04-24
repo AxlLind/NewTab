@@ -1,4 +1,10 @@
 .Clock {
+    padding-top: 5%;
     text-align: center;
     font-size: 10em;
+}
+
+.ClockDate {
+    text-align: center;
+    font-size: 2em;
 }

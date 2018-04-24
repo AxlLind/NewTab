@@ -1,4 +1,5 @@
 .Weather {
-    text-align: center;
+    align-self: center;
+    justify-self: center;
     font-size: 7em;
 }
