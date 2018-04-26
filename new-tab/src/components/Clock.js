@@ -14,13 +14,16 @@ class Clock extends Component {
     componentDidMount() {
         this.TickFunction =
             setInterval(
-                () => this.setState({ time: this.dateToTime(new Date()) }),
+                () => this.setState({
+                    time: this.dateToTime(new Date()),
+                    date: this.toDate(new Date()),
+                }),
                 1000
             );
     }
 
     componentWillUnMount() {
-        clearInterval(this.TickFunction); // stop the clock update function
+        clearInterval(this.TickFunction); // stop the update function
     }
 
     dateToTime(date) {
@@ -30,7 +33,20 @@ class Clock extends Component {
 
     toDate(date) {
         const appendZero = t => t < 10 ? `0${t}` : t;
-        return `${date.getFullYear()} ${appendZero(date.getMonth()+1)} ${appendZero(date.getDate())}`
+        const day_str = day => {
+            switch (day) {
+                case 0: return 'Sun';
+                case 1: return 'Mon';
+                case 2: return 'Tue';
+                case 3: return 'Wed';
+                case 4: return 'Thu';
+                case 5: return 'Fri';
+                case 6: return 'Sat';
+                default: // to stop linter, this cannot happen
+                    throw new Error('Day to str: outside range 0-6');
+            }
+        };
+        return `${day_str(date.getDay())} ${appendZero(date.getDate())} ${appendZero(date.getMonth()+1)}`
     }
 
     render() {

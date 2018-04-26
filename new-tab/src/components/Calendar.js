@@ -16,15 +16,20 @@ class Calendar extends Component {
         this.state = {
             today: [],
             tomorrow: [],
+            dayafter: [],
             rest: [],
         };
-        this.auth = "";
     }
 
+    /**
+     * Loads the google api and appends the script tag to the body.
+     * After that the function authenticates the user through google Oauth 2.0.
+     * Lastly it makes an api request to the google calendar api, and fetches
+     * the next 10 items in the calendar.
+     */
     loadCalendarAPI() {
         let api_src = document.createElement('script');
         api_src.src = 'https://apis.google.com/js/client.js';
-
         api_src.onload = () => {
             gapi.load('client:auth2', () => {
                 gapi.client.init({
@@ -49,21 +54,26 @@ class Calendar extends Component {
     }
 
 
+    /**
+     * Splits the fetches items from google calendar's api
+     * into the next 3 days, and then the rest.
+     */
     loadItems(items) {
-        let todays = [], tomorrows = [], rest = [];
+        let todays = [], tomorrows = [], dayafters = [], rest = [];
         items.forEach(
             item => {
-                let date = new Date(item.start.dateTime);
-                if (date.getDate() === new Date().getDate())
-                    todays.push(item);
-                else if (date.getDate() === new Date().getDate() + 1)
-                    tomorrows.push(item);
-                else rest.push(item);
+                switch (new Date(item.start.dateTime).getDate()) {
+                    case new Date().getDate():      todays.push(item); break;
+                    case new Date().getDate()+1: tomorrows.push(item); break;
+                    case new Date().getDate()+2: dayafters.push(item); break;
+                    default: rest.push(item);
+                }
             }
         );
         this.setState({
             today: todays,
             tomorrow: tomorrows,
+            dayafter: dayafters,
             rest: rest,
         });
     }
@@ -72,6 +82,9 @@ class Calendar extends Component {
         this.loadCalendarAPI();
     }
 
+    /**
+     * Returns a part of the calendar, containing a title and subsequent calendar items
+     */
     calendarPart(items, title) {
         return (items.length === 0) ? '' : (
             <div className='CalendarPart'>
@@ -84,9 +97,10 @@ class Calendar extends Component {
     render() {
         return (
             <div className='Calendar'>
-                {this.calendarPart(this.state.today, 'Today')}
-                {this.calendarPart(this.state.tomorrow, 'Tomorrow')}
-                {this.calendarPart(this.state.rest, 'Later')}
+                {this.calendarPart(this.state.today, 'Idag')}
+                {this.calendarPart(this.state.tomorrow, 'I morgon')}
+                {this.calendarPart(this.state.dayafter, 'I övermorgon')}
+                {this.calendarPart(this.state.rest, 'Senare')}
             </div>
         );
     }

@@ -10,7 +10,7 @@ class CalendarItem extends Component {
         let s = props.item.summary.split(' - ');
         if (s[0][0] === '*')
             s[0] = s[0].substring(2);
-        s[1] = s[1].split('.')[0]; // remove everything after the first dot
+        s[1] = s[1].split( /\([A-Z]{2}\d{4}\)/ )[0]; // Keep everything before course code.
         const start = this.dateToTime(new Date(props.item.start.dateTime));
         const end   = this.dateToTime(new Date(props.item.end.dateTime));
         this.state = {
@@ -22,7 +22,7 @@ class CalendarItem extends Component {
     }
 
     dateToTime(date) {
-        const appendZero = t => t < 10 ? `0${t}` : t;
+        const appendZero = s => s < 10 ? `0${s}` : s;
         return `${appendZero(date.getHours())}:${appendZero(date.getMinutes())}`;
     }
 

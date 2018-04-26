@@ -3,8 +3,7 @@
     to   {opacity: 1;}
 }
 
-.BackgroundColor {
-    /* Second div, otherwise the background color fades in as well */
+html body {
     background: #222233;
 }
 
@@ -34,6 +33,5 @@
 
 .TimeWeather {
     display: grid;
-    grid-template-rows: 1fr 1fr;
     align-items: center;
 }

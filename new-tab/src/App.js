@@ -7,14 +7,12 @@ import './css/App.css';
 class App extends Component {
     render() {
         return (
-            <div className='BackgroundColor'>
-                <div className='App'>
-                    <div className='TimeWeather'>
-                        <Clock/>
-                        <Weather/>
-                    </div>
-                    <Calendar/>
+            <div className='App'>
+                <div className='TimeWeather'>
+                    <Clock/>
+                    <Weather/>
                 </div>
+                <Calendar/>
             </div>
         );
     }
