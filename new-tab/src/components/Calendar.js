@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import CalendarItem from './CalendarItem.js';
 import '../css/Calendar.css';
 
-/* global gapi */
+/* global chrome */
 const CAL_ID    = '5lp6h8gitj2p09fgujndb1ok2e7ljq3v@import.calendar.google.com';
-const CLIENT_ID = '24789309366-u24u4e8u1h7klc20ukv57pkcrq41kk5s.apps.googleusercontent.com';
 const API_KEY   = 'AIzaSyDhsYNMlYnJjdEfHIZt0UoL-4dKuQj6n6s';
-const DISC_DOC  = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
-const SCOPE     = 'https://www.googleapis.com/auth/calendar.readonly';
 
 class Calendar extends Component {
     constructor(props) {
@@ -22,64 +19,50 @@ class Calendar extends Component {
     }
 
     /**
-     * Loads the google api and appends the script tag to the body.
-     * After that the function authenticates the user through google Oauth 2.0.
-     * Lastly it makes an api request to the google calendar api, and fetches
-     * the next 10 items in the calendar.
-     */
-    loadCalendarAPI() {
-        let api_src = document.createElement('script');
-        api_src.src = 'https://apis.google.com/js/client.js';
-        api_src.onload = () => {
-            gapi.load('client:auth2', () => {
-                gapi.client.init({
-                    'clientId': CLIENT_ID,
-                    'apiKey': API_KEY,
-                    'discoveryDocs': [DISC_DOC],
-                    'scope': SCOPE,
-                }).then(() => {
-                    this.auth = gapi.auth2.getAuthInstance();
-                    if (!this.auth.isSignedIn.get())
-                        this.auth.signIn();
-                }).then(() => gapi.client.calendar.events.list({
-                    'calendarId': CAL_ID,
-                    'timeMin': (new Date()).toISOString(),
-                    'singleEvents': true,
-                    'maxResults': 9,
-                    'orderBy': 'startTime'
-                })).then(res => this.loadItems(res.result.items))
-            });
-        }
-        document.body.appendChild(api_src);
-    }
-
-
-    /**
      * Splits the fetches items from google calendar's api
      * into the next 3 days, and then the rest.
      */
     loadItems(items) {
-        let today = [], tomorrow = [], dayafter = [], rest = [];
+        let todays = [], tomorrows = [], dayafters = [], rest = [];
         items.forEach(
             item => {
                 switch (new Date(item.start.dateTime).getDate()) {
-                    case new Date().getDate():      today.push(item); break;
-                    case new Date().getDate()+1: tomorrow.push(item); break;
-                    case new Date().getDate()+2: dayafter.push(item); break;
+                    case new Date().getDate():      todays.push(item); break;
+                    case new Date().getDate()+1: tomorrows.push(item); break;
+                    case new Date().getDate()+2: dayafters.push(item); break;
                     default: rest.push(item);
                 }
             }
         );
         this.setState({
-            today: today,
-            tomorrow: tomorrow,
-            dayafter: dayafter,
+            today: todays,
+            tomorrow: tomorrows,
+            dayafter: dayafters,
             rest: rest,
         });
     }
 
+    /**
+     * Fetches an authentication token from the chrome identity api.
+     * Then calls the google calendar API and fetches the next 10 events
+     */
     componentDidMount() {
-        this.loadCalendarAPI();
+        chrome.identity.getAuthToken({interactive: true}, token => {
+            let init = {
+                method: 'GET',
+                async: true,
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                'contentType': 'json'
+            }
+            fetch(`https://www.googleapis.com/calendar/v3/calendars/${CAL_ID}/events/` +
+                  `?timeMin=${new Date().toISOString()}&singleEvents=true&maxResults=9&orderBy=startTime&key=${API_KEY}`,
+                  init)
+            .then(res => res.json())
+            .then(res => this.loadItems(res.items));
+        });
     }
 
     /**
