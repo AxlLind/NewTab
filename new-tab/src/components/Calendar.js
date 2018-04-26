@@ -46,8 +46,13 @@ class Calendar extends Component {
      * Then calls the google calendar API and fetches the next 10 events
      */
     componentDidMount() {
-        let CAL_ID = "";
-        chrome.storage.sync.get(['CAL_ID'], res => CAL_ID = res.CAL_ID );
+        let CAL_ID, NUM_EVENTS;
+        chrome.storage.sync.get(['CAL_ID', 'NUM_EVENTS'], res => {
+            CAL_ID = res.CAL_ID;
+            NUM_EVENTS = res.NUM_EVENTS;
+        });
+        if (!CAL_ID) CAL_ID = 'primary';
+        if (!NUM_EVENTS) NUM_EVENTS = 9;
         chrome.identity.getAuthToken({interactive: true}, token => {
             let init = {
                 method: 'GET',
@@ -59,7 +64,7 @@ class Calendar extends Component {
                 'contentType': 'json'
             }
             fetch(`https://www.googleapis.com/calendar/v3/calendars/${CAL_ID}/events/` +
-                  `?timeMin=${new Date().toISOString()}&singleEvents=true&maxResults=9&orderBy=startTime&key=${API_KEY}`,
+                  `?timeMin=${new Date().toISOString()}&singleEvents=true&maxResults=${NUM_EVENTS}&orderBy=startTime&key=${API_KEY}`,
                   init)
             .then(res => res.json())
             .then(res => this.loadItems(res.items));

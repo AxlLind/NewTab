@@ -7,10 +7,7 @@ class CalendarItem extends Component {
         if (!props.item)
             throw new Error('No item given to CalendarItem');
         // special formatting for my calendar
-        let s = props.item.summary.split(' - ');
-        if (s[0][0] === '*')
-            s[0] = s[0].substring(2);
-        s[1] = s[1].split( /\([A-Z]{2}\d{4}\)/ )[0]; // Keep everything before course code.
+        const s = this.format_KTH(props.item.summary);
         const start = this.dateToTime(new Date(props.item.start.dateTime));
         const end   = this.dateToTime(new Date(props.item.end.dateTime));
         this.state = {
@@ -19,6 +16,26 @@ class CalendarItem extends Component {
             location: !props.item.location ? "Ingen Sal" : props.item.location,
             time: `${start} | ${end}`,
         };
+    }
+
+    /**
+     * Special formatting for my KTH calendar
+     */
+    format_KTH(name) {
+        let s = name.split(' - ');
+        if (s[0][0] === '*')
+            s[0] = s[0].substring(2);
+        s[1] = s[1].split( /\([A-Z]{2}\d{4}\)/ )[0]; // Keep everything before course code.
+        return s;
+    }
+
+    /**
+     * Special formatting for my girlfriends SU calendar
+     */
+    format_SU(name) {
+        let type = name.split(' ')[0];
+        let course = name.substring(type.length+1);
+        return [type, course];
     }
 
     dateToTime(date) {

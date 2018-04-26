@@ -1,0 +1,32 @@
+html body {
+    font-family: 'HelveticaNeue-UltraLight';
+    font-size: 1.2em;
+    color: #AACCFF;
+    background: #222233;
+}
+
+.OptionsGrid {
+    display: grid;
+    grid-template-columns: 150px 300px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    padding: 10px;
+}
+
+.button {
+    background-color: #AACCFF;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.input {
+    background-color: #222233;
+    border: 2px solid #AACCFF;
+    border-radius: 4px;
+    color: #AACCFF;
+    padding: 5px;
+}
