@@ -42,8 +42,8 @@ class Clock extends Component {
                 case 4: return 'Thu';
                 case 5: return 'Fri';
                 case 6: return 'Sat';
-                default: // to stop linter, this cannot happen
-                    throw new Error('Day to str: outside range 0-6');
+                default: // for linter, this will never happen
+                    throw new Error('Day outside range 0-6');
             }
         };
         return `${day_str(date.getDay())} ${appendZero(date.getDate())} ${appendZero(date.getMonth()+1)}`
@@ -51,13 +51,9 @@ class Clock extends Component {
 
     render() {
         return (
-            <div>
-                <div className='Clock'>
-                    {this.state.time}
-                </div>
-                <div className='ClockDate'>
-                    {this.state.date}
-                </div>
+            <div className='Clock'>
+                <div className='ClockTime'> {this.state.time} </div>
+                <div className='ClockDate'> {this.state.date} </div>
             </div>
         );
     }
