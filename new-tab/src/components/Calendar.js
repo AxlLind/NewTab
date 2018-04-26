@@ -14,10 +14,10 @@ class Calendar extends Component {
         super(props);
 
         this.state = {
-            today: [],
+            today:    [],
             tomorrow: [],
             dayafter: [],
-            rest: [],
+            rest:     [],
         };
     }
 
@@ -59,21 +59,21 @@ class Calendar extends Component {
      * into the next 3 days, and then the rest.
      */
     loadItems(items) {
-        let todays = [], tomorrows = [], dayafters = [], rest = [];
+        let today = [], tomorrow = [], dayafter = [], rest = [];
         items.forEach(
             item => {
                 switch (new Date(item.start.dateTime).getDate()) {
-                    case new Date().getDate():      todays.push(item); break;
-                    case new Date().getDate()+1: tomorrows.push(item); break;
-                    case new Date().getDate()+2: dayafters.push(item); break;
+                    case new Date().getDate():      today.push(item); break;
+                    case new Date().getDate()+1: tomorrow.push(item); break;
+                    case new Date().getDate()+2: dayafter.push(item); break;
                     default: rest.push(item);
                 }
             }
         );
         this.setState({
-            today: todays,
-            tomorrow: tomorrows,
-            dayafter: dayafters,
+            today: today,
+            tomorrow: tomorrow,
+            dayafter: dayafter,
             rest: rest,
         });
     }

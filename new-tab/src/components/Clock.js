@@ -12,41 +12,28 @@ class Clock extends Component {
     }
 
     componentDidMount() {
-        this.TickFunction =
+        this.tick =
             setInterval(
                 () => this.setState({
                     time: this.dateToTime(new Date()),
                     date: this.toDate(new Date()),
-                }),
-                1000
+                }), 1000
             );
     }
 
     componentWillUnMount() {
-        clearInterval(this.TickFunction); // stop the update function
+        clearInterval(this.tick); // stop the update function
     }
 
     dateToTime(date) {
-        const appendZero = t => t < 10 ? `0${t}` : t;
+        const appendZero = t => t > 9 ? t : `0${t}`;
         return `${appendZero(date.getHours())} ${appendZero(date.getMinutes())}`;
     }
 
     toDate(date) {
-        const appendZero = t => t < 10 ? `0${t}` : t;
-        const day_str = day => {
-            switch (day) {
-                case 0: return 'Sun';
-                case 1: return 'Mon';
-                case 2: return 'Tue';
-                case 3: return 'Wed';
-                case 4: return 'Thu';
-                case 5: return 'Fri';
-                case 6: return 'Sat';
-                default: // for linter, this will never happen
-                    throw new Error('Day outside range 0-6');
-            }
-        };
-        return `${day_str(date.getDay())} ${appendZero(date.getDate())} ${appendZero(date.getMonth()+1)}`
+        const appendZero = t => t > 9 ? t : `0${t}`;
+        const day_str = d => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d];
+        return `${day_str(date.getDay())} ${appendZero(date.getDate())} ${appendZero(date.getMonth()+1)}`;
     }
 
     render() {
