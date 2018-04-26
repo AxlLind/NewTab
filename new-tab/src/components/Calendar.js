@@ -3,7 +3,6 @@ import CalendarItem from './CalendarItem.js';
 import '../css/Calendar.css';
 
 /* global chrome */
-const CAL_ID    = '5lp6h8gitj2p09fgujndb1ok2e7ljq3v@import.calendar.google.com';
 const API_KEY   = 'AIzaSyDhsYNMlYnJjdEfHIZt0UoL-4dKuQj6n6s';
 
 class Calendar extends Component {
@@ -47,6 +46,8 @@ class Calendar extends Component {
      * Then calls the google calendar API and fetches the next 10 events
      */
     componentDidMount() {
+        let CAL_ID = "";
+        chrome.storage.sync.get(['CAL_ID'], res => CAL_ID = res.CAL_ID );
         chrome.identity.getAuthToken({interactive: true}, token => {
             let init = {
                 method: 'GET',

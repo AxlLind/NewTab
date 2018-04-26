@@ -1,17 +1,19 @@
 {
-  "manifest_version": 2,
-  "short_name": "New Tab",
-  "name": "New Tab override extension",
-  "version": "1.0",
-  "chrome_url_overrides" : {
-    "newtab": "index.html"
-  },
-  "permissions": [
-    "identity"
-  ],
-  "oauth2": {
-    "client_id": "24789309366-8i7o0ilv0ubo5s5ll2sv1l8ahkef4cun.apps.googleusercontent.com",
-    "scopes":["https://www.googleapis.com/auth/calendar.readonly"]
+    "manifest_version": 2,
+    "short_name": "New Tab",
+    "name": "New Tab override extension",
+    "description": "New Tab override which shows the time, weather, and calendar",
+    "version": "1.0",
+    "chrome_url_overrides" : {
+      "newtab": "index.html"
+    },
+    "permissions": [
+      "identity",
+      "storage"
+    ],
+    "options_page": "./optionspage/options.html",
+    "oauth2": {
+      "client_id": "24789309366-e2aa0tdr1a960e8p3g95quk7np0ak9kp.apps.googleusercontent.com",
+      "scopes":["https://www.googleapis.com/auth/calendar.readonly"]
+    }
   }
-}
-
