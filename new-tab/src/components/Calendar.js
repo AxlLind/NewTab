@@ -3,7 +3,7 @@ import CalendarItem from './CalendarItem.js';
 import '../css/Calendar.css';
 
 /* global chrome */
-const API_KEY   = 'AIzaSyDhsYNMlYnJjdEfHIZt0UoL-4dKuQj6n6s';
+const API_KEY = 'AIzaSyDhsYNMlYnJjdEfHIZt0UoL-4dKuQj6n6s';
 
 class Calendar extends Component {
     constructor(props) {
