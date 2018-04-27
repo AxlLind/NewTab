@@ -6,8 +6,7 @@ class CalendarItem extends Component {
         super(props);
         if (!props.item)
             throw new Error('No item given to CalendarItem');
-        // special formatting for my calendar
-        const s = this.format_KTH(props.item.summary);
+        const s = props.format === 'Axel' ? this.format_Axel(props.item.summary) : this.format_Elli(props.item.summary);
         const start = this.dateToTime(new Date(props.item.start.dateTime));
         const end   = this.dateToTime(new Date(props.item.end.dateTime));
         this.state = {
@@ -19,9 +18,9 @@ class CalendarItem extends Component {
     }
 
     /**
-     * Special formatting for my KTH calendar
+     * Special formatting for my calendar
      */
-    format_KTH(name) {
+    format_Axel(name) {
         let s = name.split(' - ');
         if (s[0][0] === '*')
             s[0] = s[0].substring(2);
@@ -30,9 +29,9 @@ class CalendarItem extends Component {
     }
 
     /**
-     * Special formatting for my girlfriends SU calendar
+     * Special formatting for my girlfriends calendar
      */
-    format_SU(name) {
+    format_Elli(name) {
         let type = name.split(' ')[0];
         let course = name.substring(type.length+1);
         return [type, course];

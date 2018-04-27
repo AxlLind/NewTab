@@ -18,17 +18,18 @@ class Calendar extends Component {
     }
 
     /**
-     * Splits the fetches items from google calendar's api
+     * Splits the fetched items from google calendar's api
      * into the next 3 days, and then the rest.
      */
     loadItems(items) {
         let todays = [], tomorrows = [], dayafters = [], rest = [];
+        let todays_date = new Date().getDate();
         items.forEach(
             item => {
-                switch (new Date(item.start.dateTime).getDate()) {
-                    case new Date().getDate():      todays.push(item); break;
-                    case new Date().getDate()+1: tomorrows.push(item); break;
-                    case new Date().getDate()+2: dayafters.push(item); break;
+                switch ( new Date(item.start.dateTime).getDate() ) {
+                    case todays_date:   todays.push(item);    break;
+                    case todays_date+1: tomorrows.push(item); break;
+                    case todays_date+2: dayafters.push(item); break;
                     default: rest.push(item);
                 }
             }
@@ -39,6 +40,7 @@ class Calendar extends Component {
             dayafter: dayafters,
             rest: rest,
         });
+        this.format_type = 'Axel';
     }
 
     /**
@@ -46,13 +48,12 @@ class Calendar extends Component {
      * Then calls the google calendar API and fetches the next 10 events
      */
     componentDidMount() {
-        let CAL_ID, NUM_EVENTS;
-        chrome.storage.sync.get(['CAL_ID', 'NUM_EVENTS'], res => {
-            CAL_ID = res.CAL_ID;
-            NUM_EVENTS = res.NUM_EVENTS;
+        let CAL_ID = 'primary', NUM_EVENTS = 9;
+        chrome.storage.sync.get(['CAL_ID', 'NUM_EVENTS', 'FORMAT_TYPE'], res => {
+            if (res.CAL_ID) CAL_ID = res.CAL_ID;
+            if (res.NUM_EVENTS) NUM_EVENTS = res.NUM_EVENTS;
+            if (res.FORMAT_TYPE) this.format_type = res.FORMAT_TYPE;
         });
-        if (!CAL_ID) CAL_ID = 'primary';
-        if (!NUM_EVENTS) NUM_EVENTS = 9;
         chrome.identity.getAuthToken({interactive: true}, token => {
             let init = {
                 method: 'GET',
@@ -78,7 +79,7 @@ class Calendar extends Component {
         return (items.length === 0) ? '' : (
             <div className='CalendarPart'>
                 <div className='CalendarTitle'> {title} </div>
-                {items.map( item => <CalendarItem item={item} key={item.id}/> )}
+                {items.map( item => <CalendarItem item={item} key={item.id} format={this.format_type}/> )}
             </div>
         );
     }
