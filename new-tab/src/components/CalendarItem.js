@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../css/Calendar.css';
 import config from '../config.js';
+import '../css/Calendar.css';
 
 class CalendarItem extends Component {
     constructor(props) {
@@ -41,13 +41,14 @@ class CalendarItem extends Component {
     }
 
     componentDidMount() {
-        const start = this.dateToTime(new Date(this.props.item.start.dateTime));
-        const end   = this.dateToTime(new Date(this.props.item.end.dateTime));
-        const s = config.FORMAT_TYPE === 'Elli' ? this.format_Elli(this.props.item.summary) : this.format_Axel(this.props.item.summary);
+        const item = this.props.item;
+        const start = this.dateToTime(new Date(item.start.dateTime));
+        const end = this.dateToTime(new Date(item.end.dateTime));
+        const s = config.FORMAT_TYPE === 'Elli' ? this.format_Elli(item.summary) : this.format_Axel(item.summary);
         this.setState({
             type: s[0],
             name: s[1],
-            location: !this.props.item.location ? "Ingen Sal" : this.props.item.location,
+            location: item.location ? item.location : "Ingen Sal",
             time: `${start} | ${end}`,
         });
     }

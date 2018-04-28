@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CalendarItem from './CalendarItem.js';
-import '../css/Calendar.css';
 import config from '../config.js';
+import '../css/Calendar.css';
 
 /* global chrome */
 
@@ -24,10 +24,9 @@ class Calendar extends Component {
     loadItems(items) {
         let todays = [], tomorrows = [], dayafters = [], rest = [];
         let todays_date = new Date().getDate();
-        items.forEach(
-            item => {
+        items.forEach(item => {
                 switch ( new Date(item.start.dateTime).getDate() ) {
-                    case todays_date:   todays.push(item);    break;
+                    case todays_date:      todays.push(item); break;
                     case todays_date+1: tomorrows.push(item); break;
                     case todays_date+2: dayafters.push(item); break;
                     default: rest.push(item);
@@ -40,12 +39,18 @@ class Calendar extends Component {
             dayafter: dayafters,
             rest: rest,
         });
-        this.format_type = 'Axel';
+    }
+
+    postParameters(o) {
+        let s = '?';
+        for (let attr in o)
+            s += `${attr}=${o[attr]}&`;
+        return s.slice(0, -1); // remove last '&'
     }
 
     /**
      * Fetches an authentication token from the chrome identity api.
-     * Then calls the google calendar API and fetches the next 10 events
+     * Then calls the google calendar API and fetches the calendar items
      */
     componentDidMount() {
         chrome.identity.getAuthToken({interactive: true}, token => {
@@ -56,13 +61,18 @@ class Calendar extends Component {
                     Authorization: 'Bearer ' + token,
                     'Content-Type': 'application/json'
                 },
-                'contentType': 'json'
-            }
-            fetch(`https://www.googleapis.com/calendar/v3/calendars/${config.CAL_ID}/events/` +
-                  `?timeMin=${new Date().toISOString()}&singleEvents=true&maxResults=${config.NUM_EVENTS}&orderBy=startTime&key=${config.GAPI_KEY}`,
-                  init)
-            .then(res => res.json())
-            .then(res => this.loadItems(res.items));
+                'contentType': 'json',
+            };
+            let parameters = this.postParameters({
+                timeMin: new Date().toISOString(),
+                maxResults: config.NUM_EVENTS,
+                singleEvents: 'true',
+                orderBy: 'startTime',
+                key: config.GAPI_KEY,
+            });
+            fetch(`https://www.googleapis.com/calendar/v3/calendars/${config.CAL_ID}/events/${parameters}`, init)
+                .then(res => res.json())
+                .then(res => this.loadItems(res.items));
         });
     }
 

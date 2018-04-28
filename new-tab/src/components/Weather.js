@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../css/Weather.css';
 import config from '../config.js';
+import '../css/Weather.css';
 
 class Weather extends Component {
     constructor(props) {
@@ -11,8 +11,20 @@ class Weather extends Component {
         }
     }
 
+    postParameters(o) {
+        let s = '?';
+        for (let attr in o)
+            s += `${attr}=${o[attr]}&`;
+        return s.slice(0, -1); // remove last '&'
+    }
+
     componentDidMount() {
-        fetch(`http://api.openweathermap.org/data/2.5/weather?id=${config.WEATHER_CITY_ID}&units=metric&APPID=${config.WEATHER_API_KEY}`)
+        let parameters = this.postParameters({
+            id: config.WEATHER_CITY_ID,
+            APPID: config.WEATHER_API_KEY,
+            units: 'metric',
+        });
+        fetch(`http://api.openweathermap.org/data/2.5/weather/${parameters}`)
             .then(res => res.json())
             .then(res => this.setState({
                 temp: Math.round(res.main.temp),
@@ -21,11 +33,7 @@ class Weather extends Component {
     }
 
     render() {
-        return (
-            <div className='Weather'>
-                {this.state.temp + '°'}
-            </div>
-        );
+        return ( <div className='Weather'> {this.state.temp + '°'} </div> );
     }
 }
 
