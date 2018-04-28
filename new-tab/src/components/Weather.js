@@ -9,17 +9,18 @@ class Weather extends Component {
         this.state = {
             temp: 0,
             icon: '10d',
+            city: '',
         }
     }
 
     /* See url for icon mapping: openweathermap.org/weather-conditions */
     weatherIcon(iconType) {
         let icon;
-        const night = (iconType[2] === 'n' ? 'night-' : '');
+        const night = (iconType[2] === 'n' ? '-night' : '');
         switch(iconType.slice(0, -1)) {
-            case '01': icon = `${night}sun`;         break;
-            case '02': icon = `${night}sunny-cloud`; break;
-            case '10': icon = `${night}sunny-rain`;  break;
+            case '01': icon = `sun${night}`;         break;
+            case '02': icon = `sunny-cloud${night}`; break;
+            case '10': icon = `sunny-rain${night}`;  break;
             case '03': icon = 'cloud';               break;
             case '04': icon = 'cloud';               break;
             case '09': icon = 'rain';                break;
@@ -51,9 +52,11 @@ class Weather extends Component {
                 .then(res => this.setState({
                     temp: Math.round(res.main.temp),
                     icon: res.weather[0].icon,
+                    city: res.name,
                 })).catch(error => console.log(error))
         };
-        this.tick = setInterval(f(), 10000);
+        f();
+        this.tick = setInterval(f, 10000);
     }
 
     componentWillUnmount() {
@@ -62,11 +65,14 @@ class Weather extends Component {
 
     render() {
         return (
-            <div className='Weather'>
-                <div className='WeatherIcon'>
-                    <img className='WeatherImage' src={this.weatherIcon(this.state.icon)} alt=''/>
+            <div className='WeatherRows'>
+                <div className='Weather'>
+                    <div className='WeatherIcon'>
+                        <img className='WeatherImage' src={this.weatherIcon(this.state.icon)} alt=''/>
+                    </div>
+                    <div className='WeatherTemp'>{this.state.temp + '°'}</div>
                 </div>
-                <div className='WeatherTemp'>{this.state.temp + '°'}</div>
+                <div>{this.state.city}</div>
             </div>
         );
     }

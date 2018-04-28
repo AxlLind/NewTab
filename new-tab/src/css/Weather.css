@@ -1,3 +1,9 @@
+.WeatherRows {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    justify-items: center;
+}
+
 .Weather {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -19,4 +25,9 @@
 
 .WeatherTemp {
     font-size: 9em;
+}
+
+.WeatherCity {
+    font-size: 2em;
+    letter-spacing: 1px;
 }

@@ -1,6 +1,6 @@
 const CAL_ID_INPUT    = document.getElementById('CAL_ID');
 const EVENTS_INPUT    = document.getElementById('NUM_EVENTS');
-const CITY_ID_INPUT = document.getElementById('WEATHER_CITY_ID');
+const CITY_ID_INPUT   = document.getElementById('WEATHER_CITY_ID');
 const FORMAT_TYPE_BOX = document.getElementById('FORMAT_TYPE');
 const SAVE_BUTTON     = document.getElementById('SAVE');
 
