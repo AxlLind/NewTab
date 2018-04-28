@@ -40,17 +40,24 @@ class Weather extends Component {
     }
 
     componentDidMount() {
-        let parameters = this.postParameters({
-            APPID: config.WEATHER_API_KEY,
-            id: config.WEATHER_CITY_ID,
-            units: 'metric',
-        });
-        fetch(`http://api.openweathermap.org/data/2.5/weather/${parameters}`)
-            .then(res => res.json())
-            .then(res => this.setState({
-                temp: Math.round(res.main.temp),
-                icon: res.weather[0].icon,
-            })).catch(error => console.log(error))
+        const f = () => {
+            let parameters = this.postParameters({
+                APPID: config.WEATHER_API_KEY,
+                id: config.WEATHER_CITY_ID,
+                units: 'metric',
+            });
+            fetch(`http://api.openweathermap.org/data/2.5/weather/${parameters}`)
+                .then(res => res.json())
+                .then(res => this.setState({
+                    temp: Math.round(res.main.temp),
+                    icon: res.weather[0].icon,
+                })).catch(error => console.log(error))
+        };
+        this.tick = setInterval(f(), 10000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.tick);
     }
 
     render() {
