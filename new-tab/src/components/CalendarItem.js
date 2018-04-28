@@ -18,7 +18,7 @@ class CalendarItem extends Component {
     /**
      * Special formatting for my calendar
      */
-    format_Axel(name) {
+    format_special(name) {
         let s = name.split(' - ');
         if (s[0][0] === '*')
             s[0] = s[0].substring(2);
@@ -29,7 +29,7 @@ class CalendarItem extends Component {
     /**
      * Special formatting for my girlfriends calendar
      */
-    format_Elli(name) {
+    format_regular(name) {
         let type = name.split(' ')[0];
         let course = name.substring(type.length+1);
         return [type, course];
@@ -44,7 +44,7 @@ class CalendarItem extends Component {
         const item = this.props.item;
         const start = this.dateToTime(new Date(item.start.dateTime));
         const end = this.dateToTime(new Date(item.end.dateTime));
-        const s = config.FORMAT_TYPE === 'Elli' ? this.format_Elli(item.summary) : this.format_Axel(item.summary);
+        const s = config.FORMAT_TYPE === 'special' ? this.format_special(item.summary) : this.format_regular(item.summary);
         this.setState({
             type: s[0],
             name: s[1],

@@ -6,7 +6,7 @@ const get_config = () => {
         WEATHER_CITY_ID: '2673730',
         CAL_ID: 'primary',
         NUM_EVENTS: '9',
-        FORMAT_TYPE: 'Elli',
+        FORMAT_TYPE: '',
     };
     let saved_attr = ['CAL_ID', 'NUM_EVENTS', 'FORMAT_TYPE'];
     chrome.storage.sync.get(saved_attr, res =>
@@ -16,7 +16,7 @@ const get_config = () => {
         })
     );
     return config;
-}
+};
 
 // Cannot use Object.freeze here. Chrome caches this meaning it cannot
 // overwrite the changed attributes when loading the page after the first time.

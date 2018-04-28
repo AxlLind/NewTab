@@ -25,14 +25,13 @@ class Calendar extends Component {
         let todays = [], tomorrows = [], dayafters = [], rest = [];
         let todays_date = new Date().getDate();
         items.forEach(item => {
-                switch ( new Date(item.start.dateTime).getDate() ) {
-                    case todays_date:      todays.push(item); break;
-                    case todays_date+1: tomorrows.push(item); break;
-                    case todays_date+2: dayafters.push(item); break;
-                    default: rest.push(item);
-                }
+            switch ( new Date(item.start.dateTime).getDate() ) {
+                case todays_date:      todays.push(item); break;
+                case todays_date+1: tomorrows.push(item); break;
+                case todays_date+2: dayafters.push(item); break;
+                default: rest.push(item);
             }
-        );
+        });
         this.setState({
             today: todays,
             tomorrow: tomorrows,
@@ -59,7 +58,7 @@ class Calendar extends Component {
                 async: true,
                 headers: {
                     Authorization: 'Bearer ' + token,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 'contentType': 'json',
             };
@@ -77,9 +76,9 @@ class Calendar extends Component {
     }
 
     /**
-     * Returns a part of the calendar, containing a title and subsequent calendar items
+     * Returns a part of the calendar, containing a title and calendar items
      */
-    calendarPart(items, title) {
+    part(items, title) {
         return (items.length === 0) ? '' : (
             <div className='CalendarPart'>
                 <div className='CalendarTitle'> {title} </div>
@@ -91,10 +90,10 @@ class Calendar extends Component {
     render() {
         return (
             <div className='Calendar'>
-                {this.calendarPart(this.state.today, 'Idag')}
-                {this.calendarPart(this.state.tomorrow, 'I morgon')}
-                {this.calendarPart(this.state.dayafter, 'I övermorgon')}
-                {this.calendarPart(this.state.rest, 'Senare')}
+                {this.part(this.state.today, 'Idag')}
+                {this.part(this.state.tomorrow, 'I morgon')}
+                {this.part(this.state.dayafter, 'I övermorgon')}
+                {this.part(this.state.rest, 'Senare')}
             </div>
         );
     }
