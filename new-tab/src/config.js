@@ -1,6 +1,6 @@
 /* global chrome */
 const get_config = () => {
-    let config = {
+    const config = {
         GAPI_KEY: 'AIzaSyDhsYNMlYnJjdEfHIZt0UoL-4dKuQj6n6s',
         WEATHER_API_KEY: 'b23c041249f8e1b699fe0e22560b992c',
         WEATHER_CITY_ID: '2673730',
@@ -8,13 +8,13 @@ const get_config = () => {
         NUM_EVENTS: '9',
         FORMAT_TYPE: '',
     };
-    let saved_attr = ['CAL_ID', 'NUM_EVENTS', 'FORMAT_TYPE'];
-    chrome.storage.sync.get(saved_attr, res =>
+    const saved_attr = ['WEATHER_CITY_ID', 'CAL_ID', 'NUM_EVENTS', 'FORMAT_TYPE'];
+    chrome.storage.sync.get(saved_attr, res => {
         saved_attr.forEach(attr => {
             if (res[attr])
                 config[attr] = res[attr];
-        })
-    );
+        });
+    });
     return config;
 };
 

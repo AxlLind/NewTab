@@ -71,7 +71,8 @@ class Calendar extends Component {
             });
             fetch(`https://www.googleapis.com/calendar/v3/calendars/${config.CAL_ID}/events/${parameters}`, init)
                 .then(res => res.json())
-                .then(res => this.loadItems(res.items));
+                .then(res => this.loadItems(res.items))
+                .catch(err => console.log(err));
         });
     }
 

@@ -13,27 +13,29 @@ class Weather extends Component {
     }
 
     /* See url for icon mapping: openweathermap.org/weather-conditions */
-    weatherIcon(iconName) {
-        const night = (iconName[2] === 'n' ? 'night-' : '');
-        switch(iconName.substr(0,2)) {
-            case '01': return require(`../weathericons/${night}sun.png`);
-            case '02': return require(`../weathericons/${night}sunny-cloud.png`);
-            case '10': return require(`../weathericons/${night}sunny-rain.png`);
-            case '03': return require('../weathericons/cloud.png');
-            case '04': return require('../weathericons/cloud.png');
-            case '09': return require('../weathericons/rain.png');
-            case '11': return require('../weathericons/thunder.png');
-            case '13': return require('../weathericons/snow.png');
-            case '50': return require('../weathericons/mist.png');
+    weatherIcon(iconType) {
+        let icon;
+        const night = (iconType[2] === 'n' ? 'night-' : '');
+        switch(iconType.slice(0, -1)) {
+            case '01': icon = `${night}sun`;         break;
+            case '02': icon = `${night}sunny-cloud`; break;
+            case '10': icon = `${night}sunny-rain`;  break;
+            case '03': icon = 'cloud';               break;
+            case '04': icon = 'cloud';               break;
+            case '09': icon = 'rain';                break;
+            case '11': icon = 'thunder';             break;
+            case '13': icon = 'snow';                break;
+            case '50': icon = 'mist';                break;
             default: // should never get here
-                return require('../weathericons/sun.png');
+                icon = 'sun';
         }
+        return require(`../weathericons/${icon}.png`);
     }
 
-    postParameters(o) {
+    postParameters(obj) {
         let s = '?';
-        for (let attr in o)
-            s += `${attr}=${o[attr]}&`;
+        for (let attr in obj)
+            s += `${attr}=${obj[attr]}&`;
         return s.slice(0, -1); // remove last '&'
     }
 
@@ -48,8 +50,7 @@ class Weather extends Component {
             .then(res => this.setState({
                 temp: Math.round(res.main.temp),
                 icon: res.weather[0].icon,
-            }))
-            .catch(error => console.log(error))
+            })).catch(error => console.log(error))
     }
 
     render() {
