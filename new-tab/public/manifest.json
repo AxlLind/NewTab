@@ -1,15 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+    "manifest_version": 2,
+    "short_name": "New Tab",
+    "name": "New Tab override extension",
+    "description": "New Tab override which shows the time, weather, and calendar",
+    "version": "1.0",
+    "chrome_url_overrides" : {
+      "newtab": "index.html"
+    },
+    "permissions": [
+      "identity",
+      "storage"
+    ],
+    "options_page": "./optionspage/options.html",
+    "oauth2": {
+      "client_id": "24789309366-e2aa0tdr1a960e8p3g95quk7np0ak9kp.apps.googleusercontent.com",
+      "scopes":["https://www.googleapis.com/auth/calendar.readonly"]
     }
-  ],
-  "start_url": "./index.html",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
-}
+  }

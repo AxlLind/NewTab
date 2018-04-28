@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import CalendarItem from './CalendarItem.js';
 import '../css/Calendar.css';
+import config from '../config.js';
 
 /* global chrome */
-const API_KEY = 'AIzaSyDhsYNMlYnJjdEfHIZt0UoL-4dKuQj6n6s';
 
 class Calendar extends Component {
     constructor(props) {
@@ -48,12 +48,6 @@ class Calendar extends Component {
      * Then calls the google calendar API and fetches the next 10 events
      */
     componentDidMount() {
-        let CAL_ID = 'primary', NUM_EVENTS = 9;
-        chrome.storage.sync.get(['CAL_ID', 'NUM_EVENTS', 'FORMAT_TYPE'], res => {
-            if (res.CAL_ID) CAL_ID = res.CAL_ID;
-            if (res.NUM_EVENTS) NUM_EVENTS = res.NUM_EVENTS;
-            if (res.FORMAT_TYPE) this.format_type = res.FORMAT_TYPE;
-        });
         chrome.identity.getAuthToken({interactive: true}, token => {
             let init = {
                 method: 'GET',
@@ -64,8 +58,8 @@ class Calendar extends Component {
                 },
                 'contentType': 'json'
             }
-            fetch(`https://www.googleapis.com/calendar/v3/calendars/${CAL_ID}/events/` +
-                  `?timeMin=${new Date().toISOString()}&singleEvents=true&maxResults=${NUM_EVENTS}&orderBy=startTime&key=${API_KEY}`,
+            fetch(`https://www.googleapis.com/calendar/v3/calendars/${config.CAL_ID}/events/` +
+                  `?timeMin=${new Date().toISOString()}&singleEvents=true&maxResults=${config.NUM_EVENTS}&orderBy=startTime&key=${config.GAPI_KEY}`,
                   init)
             .then(res => res.json())
             .then(res => this.loadItems(res.items));
@@ -79,7 +73,7 @@ class Calendar extends Component {
         return (items.length === 0) ? '' : (
             <div className='CalendarPart'>
                 <div className='CalendarTitle'> {title} </div>
-                {items.map( item => <CalendarItem item={item} key={item.id} format={this.format_type}/> )}
+                {items.map( item => <CalendarItem item={item} key={item.id}/> )}
             </div>
         );
     }
