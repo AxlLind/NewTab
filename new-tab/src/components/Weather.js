@@ -13,7 +13,7 @@ class Weather extends Component {
         }
     }
 
-    /* See url for icon mapping: openweathermap.org/weather-conditions */
+    /* See url for icon mapping: https://openweathermap.org/weather-conditions */
     weatherIcon(iconType) {
         let icon;
         const night = (iconType[2] === 'n' ? '-night' : '');
@@ -72,7 +72,7 @@ class Weather extends Component {
                     </div>
                     <div className='WeatherTemp'>{this.state.temp + '°'}</div>
                 </div>
-                <div>{this.state.city}</div>
+                <div className='WeatherCity'>{this.state.city}</div>
             </div>
         );
     }
