@@ -20,18 +20,6 @@ html body {
     animation-duration: 2s;
 }
 
-.BorderVertical {
-    border-right: 1px solid;
-    margin-bottom: 70px;
-    margin-top: 70px;
-}
-
-.BorderHorizontal {
-    border-top: 1px solid;
-    margin-left: 70px;
-    margin-right: 70px;
-}
-
 .TimeWeather {
     display: grid;
     align-items: center;
