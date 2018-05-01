@@ -1,5 +1,5 @@
 # NewTab
-NewTab is a chrome extension which overrides the new tab page. It's written in react, html, and css. All components are written from scatch, i.e no component library was used. The formatting of the calendar is quite specific for my exact calendar.
+NewTab is a chrome extension which overrides the new tab page. It's written in react and all components are done from scatch, i.e no component library was used. The formatting of the calendar is quite specific for my exact calendar.
 
 It displays the following:
 - Time and date
