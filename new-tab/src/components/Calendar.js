@@ -104,10 +104,8 @@ class Calendar extends Component {
                 {this.part(this.state.tomorrow, 'I morgon')}
                 {this.part(this.state.dayafter, 'I övermorgon')}
                 {this.part(this.state.rest, 'Senare')}
-            </div>) : (
-            <div className='Calendar'>
-                <div style={{fontSize:'3.5em'}}>Could not fetch Calendar</div>
-            </div>);
+            </div>) :
+            <div className='CalendarFailText'>Could not fetch calendar</div>
     }
 }
 
