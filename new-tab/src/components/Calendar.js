@@ -15,6 +15,7 @@ class Calendar extends Component {
             dayafter: [],
             rest:     [],
             fetched: false,
+            triedFetching: false,
         };
     }
 
@@ -83,6 +84,7 @@ class Calendar extends Component {
 
     componentDidMount() {
         this.fetchData();
+        setTimeout(() => this.setState({triedFetching: true}), 1000);
     }
 
     /**
@@ -105,7 +107,7 @@ class Calendar extends Component {
                 {this.part(this.state.dayafter, 'I övermorgon')}
                 {this.part(this.state.rest, 'Senare')}
             </div>) :
-            <div className='CalendarFailText'>Could not fetch calendar</div>
+            <div className='CalendarFailText'>{this.state.triedFetching ? 'Could not fetch calendar' : ''}</div>
     }
 }
 
