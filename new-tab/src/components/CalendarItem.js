@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import config from '../config.js';
 import '../css/Calendar.css';
 
 class CalendarItem extends Component {
     constructor(props) {
         super(props);
-        if (!props.item)
-            throw new Error('No item given to CalendarItem');
         this.state = {
             type: "",
             name: "",
-            location: "",
             time: "",
+            location: "",
         };
     }
 
-    /**
-     * Special formatting for my calendar
-     */
+    /* Default formatting - Splits into [first word, rest] */
+    format_regular(name) {
+        const type = name.split(' ')[0];
+        const course = name.substring(type.length+1);
+        return [type, course];
+    }
+
+    /* Special formatting for my calendar */
     format_special(name) {
         let s = name.split(' - ');
         if (s[0][0] === '*')
@@ -26,25 +30,16 @@ class CalendarItem extends Component {
         return s;
     }
 
-    /**
-     * Special formatting for my girlfriends calendar
-     */
-    format_regular(name) {
-        let type = name.split(' ')[0];
-        let course = name.substring(type.length+1);
-        return [type, course];
-    }
-
-    dateToTime(date) {
+    timeStr(date) {
         const appendZero = s => s < 10 ? `0${s}` : s;
         return `${appendZero(date.getHours())}:${appendZero(date.getMinutes())}`;
     }
 
     componentDidMount() {
-        const item = this.props.item;
-        const start = this.dateToTime(new Date(item.start.dateTime));
-        const end = this.dateToTime(new Date(item.end.dateTime));
-        const s = config.FORMAT_TYPE === 'special' ? this.format_special(item.summary) : this.format_regular(item.summary);
+        const item  = this.props.item;
+        const start = this.timeStr(new Date(item.start.dateTime));
+        const end   = this.timeStr(new Date(item.end.dateTime));
+        const s = (config.FORMAT_TYPE === 'special' ? this.format_special(item.summary) : this.format_regular(item.summary));
         this.setState({
             type: s[0],
             name: s[1],
@@ -63,6 +58,11 @@ class CalendarItem extends Component {
             </div>
         );
     }
+}
+
+CalendarItem.propTypes = {
+    item: PropTypes.object.isRequired,
+    key:  PropTypes.string.isRequired,
 }
 
 export default CalendarItem;

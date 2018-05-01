@@ -8,31 +8,35 @@ class Weather extends Component {
 
         this.state = {
             temp: 0,
-            icon: '10d',
-            city: '',
+            icon: '01d',
+            city: 'N/A',
         }
+        this.fetch_weather = this.fetch_weather.bind(this);
     }
 
     /* See url for icon mapping: https://openweathermap.org/weather-conditions */
     weatherIcon(iconType) {
         let icon;
-        const night = (iconType[2] === 'n' ? '-night' : '');
+        const n = (iconType[2] === 'n' ? '-night' : '');
         switch(iconType.slice(0, -1)) {
-            case '01': icon = `sun${night}`;         break;
-            case '02': icon = `sunny-cloud${night}`; break;
-            case '10': icon = `sunny-rain${night}`;  break;
-            case '03': icon = 'cloud';               break;
-            case '04': icon = 'cloud';               break;
-            case '09': icon = 'rain';                break;
-            case '11': icon = 'thunder';             break;
-            case '13': icon = 'snow';                break;
-            case '50': icon = 'mist';                break;
+            case '01': icon = `sun${n}`;         break;
+            case '02': icon = `sunny-cloud${n}`; break;
+            case '10': icon = `sunny-rain${n}`;  break;
+            case '03': icon = 'cloud';           break;
+            case '04': icon = 'cloud';           break;
+            case '09': icon = 'rain';            break;
+            case '11': icon = 'thunder';         break;
+            case '13': icon = 'snow';            break;
+            case '50': icon = 'mist';            break;
             default: // should never get here
                 icon = 'sun';
         }
         return require(`../weathericons/${icon}.png`);
     }
 
+    /**
+     * Converts a JS object into post parameters
+     */
     postParameters(obj) {
         let s = '?';
         for (let attr in obj)
@@ -40,23 +44,24 @@ class Weather extends Component {
         return s.slice(0, -1); // remove last '&'
     }
 
+    fetch_weather() {
+        let params = this.postParameters({
+            APPID: config.WEATHER_API_KEY,
+            id: config.WEATHER_CITY_ID,
+            units: 'metric',
+        });
+        fetch(`http://api.openweathermap.org/data/2.5/weather/${params}`)
+            .then(res => res.json())
+            .then(res => this.setState({
+                temp: Math.round(res.main.temp),
+                icon: res.weather[0].icon,
+                city: res.name,
+            })).catch(console.log)
+    }
+
     componentDidMount() {
-        const f = () => {
-            let parameters = this.postParameters({
-                APPID: config.WEATHER_API_KEY,
-                id: config.WEATHER_CITY_ID,
-                units: 'metric',
-            });
-            fetch(`http://api.openweathermap.org/data/2.5/weather/${parameters}`)
-                .then(res => res.json())
-                .then(res => this.setState({
-                    temp: Math.round(res.main.temp),
-                    icon: res.weather[0].icon,
-                    city: res.name,
-                })).catch(error => console.log(error))
-        };
-        f();
-        this.tick = setInterval(f, 10000);
+        this.fetch_weather(); // call it immediately, then once every 10s
+        this.tick = setInterval(this.fetch_weather, 10000);
     }
 
     componentWillUnmount() {
@@ -68,7 +73,7 @@ class Weather extends Component {
             <div className='WeatherRows'>
                 <div className='Weather'>
                     <div className='WeatherIcon'>
-                        <img className='WeatherImage' src={this.weatherIcon(this.state.icon)} alt=''/>
+                        <img className='WeatherImage' src={this.weatherIcon(this.state.icon)} alt='Weather Icon'/>
                     </div>
                     <div className='WeatherTemp'>{this.state.temp + '°'}</div>
                 </div>
