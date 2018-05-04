@@ -19,11 +19,12 @@ save_options = () => {
 
 // Fills the options with the currently saved in values
 fill_options = () => {
-    chrome.storage.sync.get(['WEATHER_CITY_ID', 'CAL_ID', 'NUM_EVENTS', 'FORMAT_TYPE'], res => {
-        CAL_ID_INPUT.value = res.CAL_ID;
-        EVENTS_INPUT.value = res.NUM_EVENTS;
-        CITY_ID_INPUT.value = res.WEATHER_CITY_ID;
-        FORMAT_TYPE_BOX.checked = (res.FORMAT_TYPE === 'special');
+    const saved_attrs = ['WEATHER_CITY_ID', 'CAL_ID', 'NUM_EVENTS', 'FORMAT_TYPE'];
+    chrome.storage.sync.get(saved_attrs, res => {
+        if (res.CAL_ID) CAL_ID_INPUT.value = res.CAL_ID;
+        if (res.NUM_EVENTS) EVENTS_INPUT.value = res.NUM_EVENTS;
+        if (res.WEATHER_CITY_ID) CITY_ID_INPUT.value = res.WEATHER_CITY_ID;
+        if (res.FORMAT_TYPE) FORMAT_TYPE_BOX.checked = (res.FORMAT_TYPE === 'special');
     });
 }
 

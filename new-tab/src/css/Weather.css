@@ -1,9 +1,9 @@
-.WeatherRows {
+.Weather {
     display: grid;
     justify-items: center;
 }
 
-.Weather {
+.WeatherIconTemp {
     display: grid;
     grid-template-columns: auto auto;
     grid-column-gap: 10px;

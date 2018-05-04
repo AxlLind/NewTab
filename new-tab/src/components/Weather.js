@@ -34,9 +34,7 @@ class Weather extends Component {
         return require(`../weathericons/${icon}.png`);
     }
 
-    /**
-     * Converts a JS object into post parameters
-     */
+    /* Converts a JS object into post parameters */
     postParameters(obj) {
         let s = '?';
         for (let attr in obj)
@@ -70,8 +68,8 @@ class Weather extends Component {
 
     render() {
         return (
-            <div className='WeatherRows'>
-                <div className='Weather'>
+            <div className='Weather'>
+                <div className='WeatherIconTemp'>
                     <img className='WeatherIcon' src={this.weatherIcon(this.state.icon)} alt='Weather Icon'/>
                     <div className='WeatherTemp'>{this.state.temp + '°'}</div>
                 </div>
