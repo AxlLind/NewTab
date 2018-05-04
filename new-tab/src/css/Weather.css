@@ -5,7 +5,7 @@
 
 .Weather {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto auto;
     grid-column-gap: 10px;
 }
 
@@ -13,12 +13,6 @@
     max-width: 100px;
     max-height: 100px;
     margin: auto;
-}
-
-.WeatherImage {
-    display: block;
-    width: 100%;
-    height: 100%;
 }
 
 .WeatherTemp {

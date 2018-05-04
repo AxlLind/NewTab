@@ -72,9 +72,7 @@ class Weather extends Component {
         return (
             <div className='WeatherRows'>
                 <div className='Weather'>
-                    <div className='WeatherIcon'>
-                        <img className='WeatherImage' src={this.weatherIcon(this.state.icon)} alt='Weather Icon'/>
-                    </div>
+                    <img className='WeatherIcon' src={this.weatherIcon(this.state.icon)} alt='Weather Icon'/>
                     <div className='WeatherTemp'>{this.state.temp + '°'}</div>
                 </div>
                 <div className='WeatherCity'>{this.state.city}</div>
