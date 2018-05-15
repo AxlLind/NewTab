@@ -11,7 +11,6 @@ class Weather extends Component {
             icon: '01d',
             city: 'N/A',
         }
-        this.fetch_weather = this.fetch_weather.bind(this);
     }
 
     /* See url for icon mapping: https://openweathermap.org/weather-conditions */
@@ -59,7 +58,7 @@ class Weather extends Component {
 
     componentDidMount() {
         this.fetch_weather(); // call it immediately, then once every 10s
-        this.tick = setInterval(this.fetch_weather, 10000);
+        this.tick = setInterval(() => this.fetch_weather(), 10000);
     }
 
     componentWillUnmount() {

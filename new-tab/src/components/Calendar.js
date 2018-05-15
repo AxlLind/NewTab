@@ -20,25 +20,25 @@ class Calendar extends Component {
     }
 
     /**
-     * Splits the fetched items from google calendar's api
+     * Splits the fetched items from google calendar's API
      * into the next 3 days, and then the rest.
      */
     loadItems(items) {
         let todays_date = new Date().getDate();
-        let todays = [], tomorrows = [], dayafters = [], rest = [];
+        let today = [], tomorrow = [], dayafter = [], rest = [];
         items.forEach(item => {
             switch ( new Date(item.start.dateTime).getDate() ) {
-                case todays_date:      todays.push(item); break;
-                case todays_date+1: tomorrows.push(item); break;
-                case todays_date+2: dayafters.push(item); break;
+                case todays_date:      today.push(item); break;
+                case todays_date+1: tomorrow.push(item); break;
+                case todays_date+2: dayafter.push(item); break;
                 default: rest.push(item);
             }
         });
         this.setState({
-            today: todays,
-            tomorrow: tomorrows,
-            dayafter: dayafters,
-            rest: rest,
+            today:    today,
+            tomorrow: tomorrow,
+            dayafter: dayafter,
+            rest:     rest,
             fetched: true,
         });
     }
@@ -54,7 +54,7 @@ class Calendar extends Component {
     }
 
     /**
-     * Fetches an authentication token from the chrome identity api.
+     * Fetches an authentication token from the chrome identity API.
      * Then calls the google calendar API and fetches the calendar items
      */
     fetchData() {
@@ -84,7 +84,12 @@ class Calendar extends Component {
 
     componentDidMount() {
         this.fetchData();
+        this.tick = setInterval(() => this.fetchData(), 5000);
         setTimeout(() => this.setState({triedFetching: true}), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.tick);
     }
 
     /**

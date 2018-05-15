@@ -9,9 +9,6 @@ class Clock extends Component {
             time: '',
             date: '',
         }
-        // got problems with updateClock, "setState is not a function"
-        // the function loses context from setInterval.
-        this.updateClock = this.updateClock.bind(this);
     }
 
     updateClock() {
@@ -26,7 +23,7 @@ class Clock extends Component {
 
     componentDidMount() {
         this.updateClock(); // call once immediately, then once every 1s
-        this.tick = setInterval(this.updateClock, 1000);
+        this.tick = setInterval(() => this.updateClock(), 1000);
     }
 
     componentWillUnMount() {
