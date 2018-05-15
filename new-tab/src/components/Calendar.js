@@ -24,8 +24,8 @@ class Calendar extends Component {
      * into the next 3 days, and then the rest.
      */
     loadItems(items) {
-        let todays_date = new Date().getDate();
-        let today = [], tomorrow = [], dayafter = [], rest = [];
+        const todays_date = new Date().getDate();
+        const today = [], tomorrow = [], dayafter = [], rest = [];
         items.forEach(item => {
             switch ( new Date(item.start.dateTime).getDate() ) {
                 case todays_date:      today.push(item); break;
@@ -59,7 +59,7 @@ class Calendar extends Component {
      */
     fetchData() {
         chrome.identity.getAuthToken({interactive: true}, token => {
-            let init = {
+            const init = {
                 method: 'GET',
                 async: true,
                 headers: {
@@ -68,8 +68,11 @@ class Calendar extends Component {
                 },
                 'contentType': 'json',
             };
-            let params = this.postParameters({
+            const next_week = new Date();
+            next_week.setDate(next_week.getDate() + 7);
+            const params = this.postParameters({
                 timeMin: new Date().toISOString(),
+                timeMax: next_week.toISOString(),
                 maxResults: config.NUM_EVENTS,
                 singleEvents: true,
                 orderBy: 'startTime',
@@ -104,15 +107,28 @@ class Calendar extends Component {
         );
     }
 
-    render() {
-        return this.state.fetched ? (
+    calendar_parts() {
+        const num_items = this.state.today.length + this.state.tomorrow.length +
+                          this.state.dayafter.length + this.state.rest.length;
+        return num_items === 0 ? (
+            <div className='CalendarFailText'>
+                {'You have no events in the next week'}
+            </div>
+        ) : (
             <div className='Calendar'>
                 {this.part(this.state.today, 'Idag')}
                 {this.part(this.state.tomorrow, 'I morgon')}
                 {this.part(this.state.dayafter, 'I övermorgon')}
                 {this.part(this.state.rest, 'Senare')}
-            </div>) :
-            <div className='CalendarFailText'>{this.state.triedFetching ? 'Could not fetch calendar' : ''}</div>
+            </div>
+        );
+    }
+
+    render() {
+        return this.state.fetched ? this.calendar_parts() :
+            <div className='CalendarFailText'>
+                {this.state.triedFetching ? 'Could not fetch calendar' : ''}
+            </div>
     }
 }
 
