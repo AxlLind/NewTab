@@ -6,6 +6,9 @@ It displays the following:
 - Current temperature (using [Open Weather Map's API](https://openweathermap.org/api))
 - Your google calendar (using [google's calendar api](https://developers.google.com/calendar/)).  The user currently logged into chrome is the one authenticated.
 
+# Main page
 ![Screenshot of webpage](./screenshots/main.png)
+
+## Options page
 ![Screenshot of options](./screenshots/options.png)
 
