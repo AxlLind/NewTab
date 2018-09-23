@@ -9,7 +9,7 @@ html body {
 }
 
 .App {
-    font-family: 'HelveticaNeue-UltraLight';
+    font-family: 'HelveticaNeue-UltraLight', 'Helvetica Neue UltraLight', 'Helvetica Neue', 'Open Sans Light';
     color: #AACCFF;
     display: grid;
     grid-template-columns: 1fr 1fr;
