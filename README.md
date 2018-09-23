@@ -6,7 +6,7 @@ It displays the following:
 - Current temperature (using [Open Weather Map's API](https://openweathermap.org/api))
 - Your google calendar (using [google's calendar api](https://developers.google.com/calendar/)).  The user currently logged into chrome is the one authenticated.
 
-You can download the extension from the google store [here](https://chrome.google.com/webstore/detail/sense-a-new-tab-override/pmclmeakdglpbafdeijnfnnedmhgnmcc)
+You can download the extension from the google store [here](https://chrome.google.com/webstore/detail/sense-a-new-tab-override/pmclmeakdglpbafdeijnfnnedmhgnmcc).
 
 # Main page
 ![Screenshot of webpage](./screenshots/main.png)
