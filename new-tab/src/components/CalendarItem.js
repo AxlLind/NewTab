@@ -24,7 +24,9 @@ class CalendarItem extends Component {
     /* Special formatting for my calendar */
     format_special(name) {
         let s = name.split(' - ');
-        if (s[0][0] === '*')
+        if (s.length < 2)
+            s.push("");
+        if (s[0][0] === '*' && s[0].length > 1)
             s[0] = s[0].substring(2);
         s[1] = s[1].split( /\([A-Z]{2}\d{4}\)/ )[0]; // Keep everything before the course code.
         return s;
