@@ -4,18 +4,14 @@ import Clock from './components/Clock.js';
 import Weather from './components/Weather.js';
 import './css/App.css';
 
-class App extends Component {
-    render() {
-        return (
-            <div className='App'>
-                <div className='TimeWeather'>
-                    <Clock/>
-                    <Weather/>
-                </div>
-                <Calendar/>
-            </div>
-        );
-    }
-}
+const App = () => (
+    <div className='App'>
+        <div className='TimeWeather'>
+            <Clock/>
+            <Weather/>
+        </div>
+        <Calendar/>
+    </div>
+);
 
 export default App;
