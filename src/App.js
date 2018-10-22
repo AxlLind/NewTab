@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Calendar from './components/Calendar.js';
 import Clock from './components/Clock.js';
 import Weather from './components/Weather.js';

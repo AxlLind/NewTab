@@ -1,43 +1,45 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import '../css/Clock.css';
 
-class Clock extends Component {
-    constructor(props) {
-        super(props);
+const fix = t => t > 9 ? t : `0${t}`;
 
-        this.state = {
-            time: '',
-            date: '',
-        }
-    }
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    updateClock() {
-        const fix = t => t > 9 ? t : `0${t}`;
-        const d = new Date();
-        const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
-        this.setState({
-            time: `${fix(d.getHours())} ${fix(d.getMinutes())}`,
-            date: `${day} ${fix(d.getDate())} ${fix(d.getMonth()+1)}`,
-        });
+class Clock extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      time: '',
+      date: '',
     }
+    this.updateClock = this.updateClock.bind(this);
+  }
 
-    componentDidMount() {
-        this.updateClock(); // call once immediately, then once every 1s
-        this.tick = setInterval(() => this.updateClock(), 1000);
-    }
+  updateClock() {
+    const d = new Date();
+    const time = `${fix(d.getHours())} ${fix(d.getMinutes())}`;
+    const date = `${days[d.getDay()]} ${fix(d.getDate())} ${fix(d.getMonth() + 1)}`;
+    this.setState({ time, date });
+  }
 
-    componentWillUnMount() {
-        clearInterval(this.tick); // stop the update function
-    }
+  componentDidMount() {
+    this.updateClock(); // call once immediately, then once every 1s
+    this.tick = setInterval(this.updateClock, 1000);
+  }
 
-    render() {
-        return (
-            <div className='Clock'>
-                <div className='ClockTime'> {this.state.time} </div>
-                <div className='ClockDate'> {this.state.date} </div>
-            </div>
-        );
-    }
+  componentWillUnMount() {
+    clearInterval(this.tick); // stop the update function
+  }
+
+  render() {
+    const { time, date } = this.state;
+    return (
+      <div className='Clock'>
+        <div className='ClockTime'> { time } </div>
+        <div className='ClockDate'> { date } </div>
+      </div>
+    );
+  }
 }
 
 export default Clock;

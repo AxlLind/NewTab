@@ -1,70 +1,68 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import config from '../config.js';
 import '../css/Calendar.css';
 
-class CalendarItem extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            type: "",
-            name: "",
-            time: "",
-            location: "",
-        };
-    }
+const appendZero = s => s < 10 ? `0${s}` : s;
 
-    /* Default formatting - Splits into [first word, rest] */
-    format_regular(name) {
-        const type = name.split(' ')[0];
-        const course = name.substring(type.length+1);
-        return [type, course];
-    }
+const timeStr = d => `${appendZero(d.getHours())}:${appendZero(d.getMinutes())}`;
 
-    /* Special formatting for my calendar */
-    format_special(name) {
-        let s = name.split(' - ');
-        if (s.length < 2)
-            s.push("");
-        if (s[0][0] === '*' && s[0].length > 1)
-            s[0] = s[0].substring(2);
-        s[1] = s[1].split( /\([A-Z]{2}\d{4}\)/ )[0]; // Keep everything before the course code.
-        return s;
-    }
+class CalendarItem extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      type: "",
+      name: "",
+      time: "",
+      location: "",
+    };
+  }
 
-    timeStr(date) {
-        const appendZero = s => s < 10 ? `0${s}` : s;
-        return `${appendZero(date.getHours())}:${appendZero(date.getMinutes())}`;
-    }
+  /* Default formatting - Splits into [first word, rest] */
+  format_regular(name) {
+    const type = name.split(' ')[0];
+    const course = name.substring(type.length + 1);
+    return [type, course];
+  }
 
-    componentDidMount() {
-        const item  = this.props.item;
-        const start = this.timeStr(new Date(item.start.dateTime));
-        const end   = this.timeStr(new Date(item.end.dateTime));
-        const s = (config.FORMAT_TYPE === 'special' ? this.format_special(item.summary) : this.format_regular(item.summary));
-        this.setState({
-            type: s[0],
-            name: s[1],
-            location: item.location ? item.location : "Ingen Sal",
-            time: `${start} | ${end}`,
-        });
-    }
+  /* Special formatting for my calendar */
+  format_special(name) {
+    let s = name.split(' - ');
+    if (s.length < 2)
+      s.push("");
+    if (s[0][0] === '*' && s[0].length > 1)
+      s[0] = s[0].substring(2);
+    s[1] = s[1].split( /\([A-Z]{2}\d{4}\)/ )[0]; // Keep everything before the course code.
+    return s;
+  }
 
-    render() {
-        return (
-            <div className='CalendarItem'>
-                <div> {this.state.location} </div>
-                <div> {this.state.name}     </div>
-                <div> {this.state.time}     </div>
-                <div> {this.state.type}     </div>
-            </div>
-        );
-    }
+  componentDidMount() {
+    const { start, end, summary } = this.props.item;
+    const location = this.props.item.location || 'Ingen Sal';
+    const time = `${timeStr(new Date(start.dateTime))} | ${timeStr(new Date(end.dateTime))}`;
+
+    const method = `format_${config.FORMAT_TYPE === 'special' ? 'special' : 'regular'}`;
+    const [ type, name ] = this[method](summary);
+
+    this.setState({ location, time, type, name });
+  }
+
+  render() {
+    const { location, name, time, type } = this.state;
+    return (
+      <div className='CalendarItem'>
+        <div> { location } </div>
+        <div> { name }     </div>
+        <div> { time }     </div>
+        <div> { type }     </div>
+      </div>
+    );
+  }
 }
 
 CalendarItem.propTypes = {
-    item: PropTypes.object.isRequired,
-    key:  PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
+  key:  PropTypes.string.isRequired,
 }
 
 export default CalendarItem;
